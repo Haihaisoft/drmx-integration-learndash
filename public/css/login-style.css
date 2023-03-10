@@ -1,0 +1,67 @@
+/* 重置 */
+html,body{vertical-align:baseline;font-size:100%;padding:0;margin:0;}
+body{
+	background:#cdcdcd;
+	font-family: Helvetica,Arial,sans-serif;
+	}/* 页面背景色*/
+.site-title{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+/* 登录 */
+.login-wrap .login-logo,.login-wrap .icon-user-name,.login-wrap .icon-password{background-image:url(../images/login_icons.png);background-repeat:no-repeat;background-color:transparent;}
+.login-wrap .btn-login,.login-wrap .link-reg,.login-wrap .link-get-pwd{-moz-transition:all 0.2s ease;-webkit-transition:all 0.2s ease;-ms-transition:all 0.2s ease;-o-transition:all 0.2s ease;transition:all 0.2s ease;}
+.login-wrap{width:500px;margin:70px auto; padding:0 0 18px;background:#232b2d;border-radius:5px;box-shadow:0 3px 3px rgba(0,0,0,0.2);overflow:hidden;line-height:1.5;font-size:12px;}
+/*.login-wrap,.login-wrap input{font-family:"Open Sans", sans-serif;}*/
+.login-wrap,.login-wrap a{color:#c7c7c7;text-decoration:none;}
+.login-wrap h2,.login-wrap ul,.login-wrap li{margin:0;padding:0;}
+.login-wrap li{list-style:none; margin-top: 5px;}
+.login-wrap .login-head{background:#fff;padding:6px;border-bottom:3px solid #2fc6ff;}
+.login-wrap .login-logo,.login-wrap .login-logo a{display:block;width:51px;height:47px;}
+.login-wrap .login-logo{background-position:0 0;margin:0 auto;}
+.login-wrap .login-cont{padding:30px 50px 0;font-size:14px;}
+.login-wrap .login-item{width:100%;position:relative;padding:0 0 15px;}
+.login-wrap .login-ipt{height:35px;position:relative;overflow:hidden;border:1px solid #727272;background:#606060;padding:0 0 0 50px;border-radius:3px;}
+.login-wrap .login-ipt input{display:block;width:100%;height:33px;line-height:33px;border:none;background:none;padding:0;color:#c7c7c7;vertical-align:middle;}
+.login-wrap .login-title{padding:8px 0 50px;font-size:12px;font-weight:normal;}
+.login-wrap .icon-user-name,.login-wrap .icon-password{display:block;width:38px;height:35px;position:absolute;left:0;top:0;border-radius:3px 0 0 3px;background-color:#fff;text-align:0 0 0 5px;}
+.login-wrap .icon-user-name{background-position:1px -58px;}
+.login-wrap .icon-password{background-position:3px -95px;}
+.login-wrap .txt-tips{text-align:center;padding:5px 0 0;}
+.login-wrap .btn-login{display:block;width:100%;height:37px;text-align:center;background:#23ced1;border:none;font-size:14px;color:#fff;border-radius:3px;cursor:pointer;}
+.login-wrap .btn-login:hover{background:#e6a303;border-bottom-color:2px solid #e6a303;}
+.login-wrap .login-foot{border-top:1px solid #1d2122;text-align:center;}
+.login-wrap .login-foot .foot-tit{border-top:1px solid #394041;padding:5px 0 15px;}
+.login-wrap .link-reg,.login-wrap .link-get-pwd{display:inline-block;width:105px;height:36px;line-height:36px;text-align:center;margin:0 10px 0 0;color:#fff;border-radius:2px;}
+.login-wrap .link-reg,.login-wrap .link-get-pwd{*display:inline;}
+.login-wrap .icon-user-name b,.login-wrap .icon-password b{display:block;width:5px;height:16px;background:url(../images/login_ipt_arrow.png) 0 0 no-repeat;position:absolute;right:-4px;top:50%;margin-top:-8px;}
+.login-wrap .link-reg{background:#3ba1da;}
+.login-wrap .link-reg:hover{background:#44b0ec;}
+.login-wrap .link-get-pwd{background:#f16161;}
+.login-wrap .link-get-pwd:hover{background:#e34343;}
+.login-wrap .login-ipt input:focus{outline:none;}
+.btl-error{
+	color: #f16161;
+	margin-top:-10px;
+	margin-bottom:10px;
+}
+.btl-error .black {
+	height: 130px;
+	text-align: center;
+}
+
+/* style panel when action process */
+#btl-login-in-process{
+	display: none;
+	background: url("../images/loading.gif") no-repeat #000 50%;
+	opacity: 0.4;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 9999;
+	top:-1px;
+	left:-1px;
+	padding-top:1px;
+	padding-left:1px;
+}
