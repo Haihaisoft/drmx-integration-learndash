@@ -10,10 +10,10 @@ $flag	= 0;
 
 // Get integration parameters
 define( 'DRMX_ACCOUNT', 		get_option('drmx_account'));
-define( 'DRMX_AUTHENTICATION', 	get_option('drmx_authentication'));
+define( 'DRMX_AUTHENTICATION', 		get_option('drmx_authentication'));
 define( 'DRMX_GROUPID', 		get_option('drmx_groupid'));
 define( 'DRMX_RIGHTSID', 		get_option('drmx_rightsid'));
-define( 'WSDL', 				get_option('drmx_wsdl'));
+define( 'WSDL', 			get_option('drmx_wsdl'));
 define( 'DRMX_BINDING', 		get_option('drmx_binding'));
 
 $client = new nusoap_client(WSDL, 'wsdl');
