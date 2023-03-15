@@ -62,6 +62,8 @@ Finally, select License is Revocable below and click the Submit button.
 
 Visit the DRM-X 4.0 Protect Files page, select the License Profile (course) of the video you want to protect, and complete the protection.
 
+[**How to protect videos and PDF files?**](https://www.drm-x.com/DRM-X4.0_encryption_tutorial.aspx)
+
 ### 4. Upload the protected video
 
 You can upload the protected video to your Wordpress web server, or to a separate video storage server. But it must have an absolute URL to be embedded in Xvast online player. For example: https://www.domainname.com/videos/xxxxx_P.mp4
