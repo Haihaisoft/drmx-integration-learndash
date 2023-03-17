@@ -1,6 +1,6 @@
 # DRM-X 4.0 LearnDash LMS(WordPress) Plugin -- (drmx-integration-learndash)
 
-DRM-X 4.0 supports [encrypted video](https://www.haihaisoft.com/Video-DRM-Protection.aspx), audio and PDF. DRM-X 4.0 protected courses can [prevent screen recording](https://www.haihaisoft.com/Smart-Prevent-Screen-Recording.aspx), display user information [watermark](https://www.drm-x.com/Secure-Architecture-4.0.aspx#watermark-scroll-tab), and bind user devices to [prevent sharing accounts](https://www.drm-x.com/Secure-Architecture-4.0.aspx#binding-scroll-tab). Through this plugin, you can easily integrate DRM-X 4.0 system with your LearnDash LMS system seamlessly.
+DRM-X 4.0 supports [encrypted video](https://www.haihaisoft.com/Video-DRM-Protection.aspx), audio and PDF. DRM-X 4.0 protected courses can [prevent screen recording](https://www.haihaisoft.com/Smart-Prevent-Screen-Recording.aspx), display user information [watermark](https://www.drm-x.com/Secure-Architecture-4.0.aspx#watermark-scroll-tab), and bind user devices to [prevent sharing accounts](https://www.drm-x.com/Secure-Architecture-4.0.aspx#binding-scroll-tab). Through this plugin, you can easily integrate DRM-X 4.0 system with your LearnDash LMS system seamlessly. Protects WordPress courses from piracy and prevents LearnDash courses from recording.
 
 
 
@@ -52,7 +52,7 @@ Get the course ID through the URL "**post**" parameter in the browser address ba
 
 Login to your DRM-X 4.0 account, visit the License Profile page, and create a License Profile that belongs to the course.
 
-- **Profile Nam:** We recommend that the License Profile name be the same as the course name.
+- **Profile Name:** We recommend that the License Profile name be the same as the course name.
 - **Default Rights:** Select any one of the Rights.
 - **ProductID in your system(Option):** Set the ID of the corresponding course here, which is the post id viewed in the first step.
 
