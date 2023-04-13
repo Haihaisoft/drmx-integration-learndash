@@ -10,10 +10,10 @@ $flag	= 0;
 
 // Get integration parameters
 define( 'DRMX_ACCOUNT', 		get_option('drmx_account'));
-define( 'DRMX_AUTHENTICATION', 		get_option('drmx_authentication'));
+define( 'DRMX_AUTHENTICATION', 	get_option('drmx_authentication'));
 define( 'DRMX_GROUPID', 		get_option('drmx_groupid'));
 define( 'DRMX_RIGHTSID', 		get_option('drmx_rightsid'));
-define( 'WSDL', 			get_option('drmx_wsdl'));
+define( 'WSDL', 				get_option('drmx_wsdl'));
 define( 'DRMX_BINDING', 		get_option('drmx_binding'));
 
 $client = new nusoap_client(WSDL, 'wsdl');
@@ -23,7 +23,7 @@ $client->decode_utf8 = false;
 if($_POST){
 	$username 	= $_REQUEST["username"];
 	$pwd 		= $_REQUEST["password"];
-	$user 		= get_user_by('login', $username); 
+	$user		= get_user_by('login', $username); 
 	$userid 	= $user->ID;
 	$user_pass 	= $user->user_pass;
 	$userEmail	= $user->user_email;
@@ -51,12 +51,6 @@ mysqli_set_charset ($dbcon,'utf8');
 // Get website db table prefix
 $table_prefix = $wpdb->prefix;
 
-$meta_key = "course_".$_SESSION['ProductID']."_access_from";
-
-$result = mysqli_query($dbcon,"SELECT meta_value FROM ".$table_prefix."usermeta WHERE meta_key='".$meta_key."' AND user_id='".$userid."'");
-$resultRow = mysqli_fetch_array($result, MYSQLI_ASSOC);
-$isEnrolled = $resultRow['meta_value'];
-
 // Get Course Access Expiration
 $courseResult = mysqli_query($dbcon,"SELECT meta_value FROM ".$table_prefix."postmeta WHERE meta_key='_sfwd-courses' AND post_id='".$_SESSION['ProductID']."'");
 $courseRow = mysqli_fetch_array($courseResult, MYSQLI_ASSOC);
@@ -68,6 +62,31 @@ if($sfwd_courses_expire_access != FALSE){
 	$rights_duration = substr($newStr,0,strpos($newStr,';')); //Access Period 
 }else{
 	$rights_duration = "-1"; //Access Period 
+}
+
+// user user group course 
+$meta_key = "course_".$_SESSION['ProductID']."_access_from";
+
+$result = mysqli_query($dbcon,"SELECT meta_value FROM ".$table_prefix."usermeta WHERE meta_key='".$meta_key."' AND user_id='".$userid."'");
+$resultRow = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$isEnrolled = $resultRow['meta_value'];
+
+if($isEnrolled == NULL){
+	// Get the user group set by the course
+	$course_group_result = mysqli_query($dbcon,"SELECT meta_key FROM ".$table_prefix."postmeta WHERE meta_key LIKE 'learndash_group_enrolled_%' AND post_id='".$_SESSION['ProductID']."'");
+	$course_group_resultRow = mysqli_fetch_all($course_group_result, MYSQLI_ASSOC);
+	
+	//Find out if a user belongs to this user group
+	foreach($course_group_resultRow as $group){
+		$group_id = str_replace('learndash_group_enrolled_','',$group['meta_key']);
+
+		$user_group_result = mysqli_query($dbcon,"SELECT meta_value FROM ".$table_prefix."usermeta WHERE meta_key='learndash_group_users_".$group_id."' AND user_id='".$userid."'");
+		$user_group_resultRow = mysqli_fetch_array($user_group_result, MYSQLI_ASSOC);
+		$isEnrolled = $user_group_resultRow['meta_value'];
+		if($isEnrolled != NULL){
+			break;
+		}
+	}
 }
 
 if($isEnrolled != NULL){
