@@ -2,7 +2,7 @@
 
 DRM-X 4.0 supports [encrypted video](https://www.haihaisoft.com/Video-DRM-Protection.aspx), audio and PDF. DRM-X 4.0 protected courses can [prevent screen recording](https://www.haihaisoft.com/Smart-Prevent-Screen-Recording.aspx), display user information [watermark](https://www.drm-x.com/Secure-Architecture-4.0.aspx#watermark-scroll-tab), and bind user devices to [prevent sharing accounts](https://www.drm-x.com/Secure-Architecture-4.0.aspx#binding-scroll-tab). Through this plugin, you can easily integrate DRM-X 4.0 system with your LearnDash LMS system seamlessly. Protects WordPress courses from piracy and prevents LearnDash courses from recording.
 
-
+**[Download DRM-X 4.0 LearnDash Integration Plugin](https://www.drm-x.com/download/DRM-X_4.0_Integration/drmx-integration-learndash.zip)**
 
 # File Description
 
