@@ -232,9 +232,10 @@ function updateRight($client, $lp_duration, $userEmail){
 		'PreviewTime' 			=> 3,
 		'PreviewTimeUnit' 		=> "Day",
 		'PreviewPage' 			=> 3,
+		'DisableVirtualMachine'		=> 'True',
 	);
-	$update_Right = $client->call("UpdateRight", array("parameters" => $updateRight_param), "", "", true, true);
-	return $update_Right["UpdateRightResult"];
+	$update_Right = $client->call("UpdateRightWithDisableVirtualMachine", array("parameters" => $updateRight_param), "", "", true, true);
+	return $update_Right["UpdateRightWithDisableVirtualMachineResult"];
 }
 
 function checkUserIsRevoked($client, $username){
