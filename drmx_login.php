@@ -9,10 +9,10 @@ $flag	= 0;
 
 // Get integration parameters
 define( 'DRMX_ACCOUNT', 		get_option('drmx_account'));
-define( 'DRMX_AUTHENTICATION', 	get_option('drmx_authentication'));
+define( 'DRMX_AUTHENTICATION', 		get_option('drmx_authentication'));
 define( 'DRMX_GROUPID', 		get_option('drmx_groupid'));
 define( 'DRMX_RIGHTSID', 		get_option('drmx_rightsid'));
-define( 'WSDL', 				get_option('drmx_wsdl'));
+define( 'WSDL', 			get_option('drmx_wsdl'));
 define( 'DRMX_BINDING', 		get_option('drmx_binding'));
 
 $client = new SoapClient(WSDL, array('trace' => false));
@@ -40,8 +40,9 @@ if($_POST){
 
 /****** Connect database configuration *******/
 $dbcon=mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-if (mysqli_connect_errno($dbcon)){
-    echo esc_attr("Connect MySQL failed: " . mysqli_connect_error());
+if ($dbcon -> connect_errno) {
+	echo "Failed to connect to MySQL: " . $dbcon -> connect_error;
+	exit();
 }
 mysqli_set_charset ($dbcon,'utf8');
 
