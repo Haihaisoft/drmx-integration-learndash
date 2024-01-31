@@ -1,24 +1,21 @@
-﻿<?php
+<?php
 session_start();
 require '../../../wp-load.php';
 error_reporting(E_ALL & ~E_DEPRECATED);
-include 'includes/drm_nusoap.php'; 
 
 $flag	= 0;
 // Get the yourproductid set in the license Profile.
-//$PIDs	= explode('-', $_SESSION['ProductID']);
+// $PIDs	= explode('-', $_SESSION['ProductID']);
 
 // Get integration parameters
 define( 'DRMX_ACCOUNT', 		get_option('drmx_account'));
-define( 'DRMX_AUTHENTICATION', 		get_option('drmx_authentication'));
+define( 'DRMX_AUTHENTICATION', 	get_option('drmx_authentication'));
 define( 'DRMX_GROUPID', 		get_option('drmx_groupid'));
 define( 'DRMX_RIGHTSID', 		get_option('drmx_rightsid'));
-define( 'WSDL', 			get_option('drmx_wsdl'));
+define( 'WSDL', 				get_option('drmx_wsdl'));
 define( 'DRMX_BINDING', 		get_option('drmx_binding'));
 
-$client = new nusoap_client(WSDL, 'wsdl');
-$client->soap_defencoding = 'UTF-8';
-$client->decode_utf8 = false;
+$client = new SoapClient(WSDL, array('trace' => false));
 
 if($_POST){
 	$username 	= $_REQUEST["username"];
@@ -44,7 +41,7 @@ if($_POST){
 /****** Connect database configuration *******/
 $dbcon=mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno($dbcon)){
-    echo "Connect MySQL failed: " . mysqli_connect_error();
+    echo esc_attr("Connect MySQL failed: " . mysqli_connect_error());
 }
 mysqli_set_charset ($dbcon,'utf8');
 
@@ -110,8 +107,8 @@ if($isEnrolled != NULL){
 		
 		/*****After the License Rights is updated, perform the method of obtaining the license****/
 		$licenseResult = getLicense($client, $username);
-		$license = $licenseResult['getLicenseRemoteToTableWithVersionResult'];
-		$message = $licenseResult['Message'];
+		$license = $licenseResult->getLicenseRemoteToTableWithVersionResult;
+		$message = $licenseResult->Message;
 
 		if(stripos($license, '<div id="License_table_DRM-x4" style="display:none;">' )  === false ){
 			header('location: drmx_LicError.php?error='.$license.'&message='.$message);
@@ -164,44 +161,43 @@ function getIP(){
 
 function checkUserExists($client, $username) {
     $CheckUser_param = array(
-        'UserName' 		=> $username,
-        'AdminEmail' 		=> DRMX_ACCOUNT,
+        'UserName' 				=> $username,
+        'AdminEmail' 			=> DRMX_ACCOUNT,
         'WebServiceAuthStr' 	=> DRMX_AUTHENTICATION,
     );
-    
-    $CheckUser = $client->call('CheckUserExists', array('parameters' => $CheckUser_param), '', '', true, true);
-    return $CheckUser['CheckUserExistsResult'];
+
+    $CheckUser = $client->__soapCall('CheckUserExists', array('parameters' => $CheckUser_param));
+    return $CheckUser->CheckUserExistsResult;
 }
 
 function addNewUser($client, $username, $userEmail){
 	$add_user_param = array(
 		'AdminEmail' 		=> DRMX_ACCOUNT,
-		'WebServiceAuthStr' 	=> DRMX_AUTHENTICATION,
-		'GroupID' 		=> DRMX_GROUPID,
+		'WebServiceAuthStr' => DRMX_AUTHENTICATION,
+		'GroupID' 			=> DRMX_GROUPID,
 		'UserLoginName' 	=> $username,
 		'UserPassword' 		=> 'N/A',
 		'UserEmail' 		=> $userEmail,
 		'UserFullName' 		=> 'N/A',
-		'Title' 		=> 'N/A',
-		'Company' 		=> 'N/A',
-		'Address' 		=> 'N/A',
-		'City' 			=> 'N/A',
-		'Province' 		=> 'N/A',
-		'ZipCode' 		=> 'N/A',
-		'Phone' 		=> 'N/A',
+		'Title' 			=> 'N/A',
+		'Company' 			=> 'N/A',
+		'Address' 			=> 'N/A',
+		'City' 				=> 'N/A',
+		'Province' 			=> 'N/A',
+		'ZipCode' 			=> 'N/A',
+		'Phone' 			=> 'N/A',
 		'CompanyURL' 		=> 'N/A',
 		'SecurityQuestion' 	=> 'N/A',
 		'SecurityAnswer' 	=> 'N/A',
-		'IP' 			=> getIP(),
-		'Money' 		=> '0',
+		'IP' 				=> getIP(),
+		'Money' 			=> '0',
 		'BindNumber' 		=> DRMX_BINDING,
 		'IsApproved' 		=> 'yes',
 		'IsLockedOut' 		=> 'no',
 	);
 
-	$add_user = $client->call('AddNewUser', array('parameters' => $add_user_param), '', '', true, true);
-	
-	return $add_user['AddNewUserResult'];
+	$add_user = $client->__soapCall('AddNewUser', array('parameters' => $add_user_param));
+	return $add_user->AddNewUserResult;
 }
 
 function updateRight($client, $lp_duration, $userEmail){
@@ -209,33 +205,34 @@ function updateRight($client, $lp_duration, $userEmail){
 	$ExpirationDate = date("Y/m/d", strtotime("+1 year"));
 
 	$updateRight_param = array(
-		'AdminEmail'			=> DRMX_ACCOUNT,
-		'WebServiceAuthStr'		=> DRMX_AUTHENTICATION,
-		'RightsID'			=> DRMX_RIGHTSID,
-		'Description' 			=> "Courses Rights (Please don't delete)",
-		'PlayCount' 			=> "-1",
-		'BeginDate' 			=> $beginDate,
-		'ExpirationDate' 		=> $ExpirationDate,
+		'AdminEmail'				=> DRMX_ACCOUNT,
+		'WebServiceAuthStr'			=> DRMX_AUTHENTICATION,
+		'RightsID'					=> DRMX_RIGHTSID,
+		'Description' 				=> "Courses Rights (Please don't delete)",
+		'PlayCount' 				=> "-1",
+		'BeginDate' 				=> $beginDate,
+		'ExpirationDate' 			=> $ExpirationDate,
 		'ExpirationAfterFirstUse'	=> $lp_duration,
-		'RightsPrice' 			=> "0",
-		'AllowPrint' 			=> "False",
-		'AllowClipBoard' 		=> "False",
-		'AllowDoc'			=> "False",
-		'EnableWatermark' 		=> "True",
-		'WatermarkText' 		=> $userEmail." ++username",
-		'WatermarkArea' 		=> "1,2,3,4,5,",
-		'RandomChangeArea' 		=> "True",
-		'RandomFrquency' 		=> "12",
-		'EnableBlacklist' 		=> "True",
-		'EnableWhitelist' 		=> "True",
-		'ExpireTimeUnit' 		=> "Day",
-		'PreviewTime' 			=> 3,
-		'PreviewTimeUnit' 		=> "Day",
-		'PreviewPage' 			=> 3,
+		'RightsPrice' 				=> "0",
+		'AllowPrint' 				=> "False",
+		'AllowClipBoard' 			=> "False",
+		'AllowDoc'					=> "False",
+		'EnableWatermark' 			=> "True",
+		'WatermarkText' 			=> $userEmail." ++username",
+		'WatermarkArea' 			=> "1,2,3,4,5,",
+		'RandomChangeArea' 			=> "True",
+		'RandomFrquency' 			=> "12",
+		'EnableBlacklist' 			=> "True",
+		'EnableWhitelist' 			=> "True",
+		'ExpireTimeUnit' 			=> "Day",
+		'PreviewTime' 				=> 3,
+		'PreviewTimeUnit' 			=> "Day",
+		'PreviewPage' 				=> 3,
 		'DisableVirtualMachine'		=> 'True',
 	);
-	$update_Right = $client->call("UpdateRightWithDisableVirtualMachine", array("parameters" => $updateRight_param), "", "", true, true);
-	return $update_Right["UpdateRightWithDisableVirtualMachineResult"];
+	
+	$update_Right = $client->__soapCall('UpdateRightWithDisableVirtualMachine', array('parameters' => $updateRight_param));
+	return $update_Right->UpdateRightWithDisableVirtualMachineResult;
 }
 
 function checkUserIsRevoked($client, $username){
@@ -244,8 +241,9 @@ function checkUserIsRevoked($client, $username){
 		'WebServiceAuthStr'  => DRMX_AUTHENTICATION,
 		'UserLoginName'      => $username,
 	);
-	$CheckUserIsRevokedResult = $client->call('CheckUserIsRevoked', array('parameters' => $CheckUserIsRevoked), '', '', true, true);
-	return $CheckUserIsRevokedResult['CheckUserIsRevokedResult'];
+	
+	$CheckUserIsRevokedResult = $client->__soapCall('CheckUserIsRevoked', array('parameters' => $CheckUserIsRevoked));
+	return $CheckUserIsRevokedResult->CheckUserIsRevokedResult;
 }
 
 
@@ -267,7 +265,7 @@ function getLicense($client, $username){
 	);
 	
 	/*****Obtain license by calling getLicenseRemoteToTableWithVersion******/
-	$result = $client->call('getLicenseRemoteToTableWithVersion', array('parameters' => $param), '', '', true, true);
+	$result = $client->__soapCall('getLicenseRemoteToTableWithVersion', array('parameters' => $param));
 	return $result;
 }
 
@@ -290,15 +288,15 @@ function getLicense($client, $username){
 			<div id="btl-login-error" class="btl-error">
 				<div class="black">
 					<?php 
-						echo $info;
+						echo esc_attr($info);
 					?>
 				</div>
 			</div>
 			<div class="login-foot">
 				<div class="foot-tit">Other options</div>
 				<div class="foot-acts">
-					<a class="link-reg" href="<?php echo site_url(); ?>" target="_blank">Help?</a>
-					<a class="link-get-pwd" href="<?php echo site_url(); ?>" target="_blank">Buy Course</a>
+					<a class="link-reg" href="<?php echo esc_attr(site_url()); ?>" target="_blank">Help?</a>
+					<a class="link-get-pwd" href="<?php echo esc_attr(site_url()); ?>" target="_blank">Buy Course</a>
 				</div>
 			</div>
 		</div>
