@@ -95,11 +95,11 @@ if($isEnrolled != NULL){
 		$flag = 1;
 	}
 	// check user is revoked
-	if(checkUserIsRevoked($client, $username)){
+	/*if(checkUserIsRevoked($client, $username)){
 		$errorInfo = 'Username: '.$username.' is revoked.';
 		header("location:drmx_LicError.php?error=".$errorInfo."&message=".$message);
 		exit;
-	}
+	}*/
 
 	/*** Automatically update license permissions for users based on duration of the course ****/
 	$updateRightResult = updateRight($client, $rights_duration, $userEmail);
