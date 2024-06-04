@@ -12,7 +12,6 @@ This is a WordPress Video Protection plugin. It comes from [Haihaisoft DRM-X 4.0
 - **drmx_login.php** Verify user login information and course orders, call DRM-X 4.0 integration interface to add users, update Rights, and get licenses.
 - **drmx_licError.php** Show the error encountered when obtaining a license.
 - **licstore.php** Storage of acquired licenses.
-- **includes/drm_nusoap.php** Third-party nusoap class file to call DRM-X 4.0 XML Web Service interface.
 - **public/css/login-style.css** DRM-X 4.0 Integration Style files for pages.
 - **public/images/**  DRM-X 4.0 Integration Get license page image folder.
 
