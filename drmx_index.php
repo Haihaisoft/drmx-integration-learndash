@@ -1,64 +1,34 @@
-﻿<?php
-session_start();
+<?php
+define('WP_USE_THEMES', false);
+require_once dirname(__DIR__, 3) . '/wp-load.php';
 
-require '../../../wp-load.php';
+/*When the user opens your protected content, DRM-X will provide the value.*/
+$drmx_params = [
+    'profileid'      => isset($_REQUEST['profileid']) ? sanitize_text_field($_REQUEST['profileid']) : '',
+    'clientinfo'     => isset($_REQUEST['clientinfo']) ? sanitize_text_field($_REQUEST['clientinfo']) : '',
+    'platform'       => isset($_REQUEST['platform']) ? sanitize_text_field($_REQUEST['platform']) : '',
+    'contenttype'    => isset($_REQUEST['contenttype']) ? sanitize_text_field($_REQUEST['contenttype']) : '',
+    'yourproductid'  => isset($_REQUEST['yourproductid']) ? sanitize_text_field($_REQUEST['yourproductid']) : "0",
+    'rightsid'       => isset($_REQUEST['rightsid']) ? sanitize_text_field($_REQUEST['rightsid']) : '',
+    'version'        => isset($_REQUEST['version']) ? sanitize_text_field($_REQUEST['version']) : '',
+    'return_url'     => isset($_REQUEST['return_url']) ? $_REQUEST['return_url'] : '',
+    'mac'            => isset($_REQUEST['mac']) ? sanitize_text_field($_REQUEST['mac']) : '',
+];
 
-$_SESSION['ProfileID'] = $_REQUEST["profileid"];
-$_SESSION['ClientInfo'] = $_REQUEST["clientinfo"];
-$_SESSION['Platform'] = $_REQUEST["platform"];
-$_SESSION['ContentType'] = $_REQUEST["contenttype"];
-$_SESSION['ProductID'] = $_REQUEST["yourproductid"];
-$_SESSION['RightsID'] = $_REQUEST["rightsid"];
-$_SESSION['Version'] = $_REQUEST["version"];
-$_SESSION['Return_URL'] = $_REQUEST["return_url"];
-
-if (is_user_logged_in()){
-	echo "<SCRIPT language=JavaScript>location='drmx_login.php';</SCRIPT>";
+if (!session_id()) {
+   session_start();
 }
 
-/*When the user opens your protected content, DRM-X will provide the above value.*/
+$cache_key = 'drmx_temp_params_' . session_id();
+wp_cache_delete($cache_key, 'options');
+update_option($cache_key, $drmx_params, false);
+
+if (is_user_logged_in()) {
+    wp_redirect(home_url('/wp-content/plugins/drmx-integration-learndash/drmx_login.php'));
+    exit;
+} else {
+   wp_redirect(wp_login_url(home_url('/wp-content/plugins/drmx-integration-learndash/drmx_login.php')));
+   exit;
+}
+
 ?>
-
-<!DOCTYPE>
-<HTML>
-<head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <title>Login and obtain license</title>
-   <link rel="stylesheet" type="text/css" href="public/css/login-style.css" />
-</head>
-
-<body>
-	<div class="login-wrap">
-      <div class="login-head">
-         <div align="center"><img src="public/images/logo.png" alt=""></div>
-      </div>
-      <form name="postForm" action="drmx_login.php" method="post">
-         <div class="login-cont">
-            <!-- <div id="btl-login-error" class="btl-error" style="display:none;"></div> -->
-            <ul>
-               <li class="login-item">
-                  <div class="login-ipt">
-                     <span class="icon-user-name"><b></b></span>
-                     <input type="text" name="username" id="btl-input-username" placeholder="Username">
-                  </div>
-               </li>
-               <li class="login-item">
-                  <div class="login-ipt">
-                     <span class="icon-password"><b></b></span>
-                     <input type="password" name="password" id="btl-input-password" placeholder="Password">
-                  </div>
-               </li>
-               <li class="login-item">
-                  <input class="btn-login" type="submit" value="Login">
-               </li>
-            </ul>
-            <div class="login-foot">
-               <div class="foot-acts">
-                  Please login to your account and get a license. If you do not buy a course, please visit our website. <a href="<?php echo site_url() ?>" target="_blank"><?php echo site_url() ?></a>
-               </div>
-            </div>
-         </div>
-	   </form>
-   </div>
-</body>
-</html>
