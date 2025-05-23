@@ -1,5 +1,15 @@
 <?php
-session_start();
+
+require_once dirname(__DIR__, 3) . '/wp-load.php';
+
+if (!session_id()) {
+  session_start();
+}
+
+$license_cache_key = isset($_GET['license_cache_key']) ? sanitize_text_field($_GET['license_cache_key']) : 'license_temp_params_' . session_id();
+wp_cache_delete($license_cache_key, 'options');
+$license_params = get_option($license_cache_key);
+
 ?>
 
 <!DOCTYPE html>
@@ -7,13 +17,13 @@ session_start();
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <!--The title tag of licstore.php must be set to Return_URL, otherwise the video will not be able to return to the original playback page after obtain the license-->
-<title><?php echo $_SESSION["Return_URL"]; ?></title>
+<title><?php echo $license_params["return_url"]; ?></title>
 <link rel="stylesheet" type="text/css" href="public/css/login-style.css" />
 </head>
 
 <body>
 <?php
-  echo $_SESSION["license"];
+  echo $license_params["license"];
 ?>
   <div class="login-wrap" id="content">
     <div class="login-head">
@@ -23,13 +33,12 @@ session_start();
       <div class="login-cont">
         <div class="black">
           <?php 
-            echo $_SESSION["message"];
+            echo $license_params["message"];
           ?>
         </div>
         <div class="login-foot">
           <div class="foot-acts">
-            <!--<a class="link-reg" id="openFile" href="<?php echo $_SESSION["Return_URL"]; ?>" onclick="window.location.href = '<?php echo $_REQUEST["Return_URL"] ?>';" target="_blank">Open File</a>-->
-            <input id="openFile" name="openFile" class="btn-login" type="button" value="Open Course" onclick="window.location.href = '<?php echo $_SESSION['Return_URL'] ?>';" />
+            <input id="openFile" name="openFile" class="btn-login" type="button" value="Open Course" onclick="window.location.href = '<?php echo $license_params['return_url'] ?>';" />
           </div>
         </div>
       </div>
@@ -39,7 +48,7 @@ session_start();
     document.onreadystatechange = subSomething; 
       function subSomething() {
           if (document.readyState == "complete") {
-              var varURL = '<?php echo $_SESSION['Return_URL']; ?>';
+              var varURL = '<?php echo $license_params['return_url']; ?>';
               if(varURL != 'ios_x'){
                   document.getElementById("openFile").click();
               }else{
