@@ -1,5 +1,5 @@
-﻿<?php 
-  require '../../../wp-load.php';
+<?php 
+  require_once dirname(__DIR__, 3) . '/wp-load.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,30 +18,30 @@
       <div id="btl-login-error" class="btl-error">
         <div class="black">
           <?php
-            $LicError = $_GET['error'];
-            $MesError = $_GET['message'];
+            $LicError = isset( $_GET['error'] ) ? $_GET['error'] : '';
+            $MesError = isset( $_GET['message'] ) ? $_GET['message'] : '';
           
             if($LicError == "ERROR:EXCEED_BIND"){
-              echo "ERROR:EXCEED_BIND, if in doubt please contact the administrator.";
+              echo esc_attr("ERROR:EXCEED_BIND, if in doubt please contact the administrator.");
             }else if ($LicError == "ERROR:ADMIN_NO_MONEY") {
-              echo "ERROR:ADMIN_NO_MONEY, please contact the administrator.";
+              echo esc_attr("ERROR:ADMIN_NO_MONEY, please contact the administrator.");
             }else if ($MesError == "ERROR:RIGHTS EXPIRED") {
-              echo "ERROR:RIGHTS EXPIRED, please contact the administrator..";
+              echo esc_attr("ERROR:RIGHTS EXPIRED, please contact the administrator..");
             }else {
-              echo $LicError;
+              echo esc_attr($LicError);
               echo "<br>";
-              echo $MesError;
+              echo esc_attr($MesError);
             }
           ?>
         </div>
       </div>
       <div class="login-foot">
-				<div class="foot-tit">Other options</div>
-				<div class="foot-acts">
-					<a class="link-reg" href="<?php echo site_url(); ?>" target="_blank">Help?</a>
-					<a class="link-get-pwd" href="<?php echo site_url(); ?>" target="_blank">Buy Course</a>
-				</div>
-			</div>
+	<div class="foot-tit">Other options</div>
+	<div class="foot-acts">
+	    <a class="link-reg" href="<?php echo esc_attr(site_url()); ?>" target="_blank">Help?</a>
+	    <a class="link-get-pwd" href="<?php echo esc_attr(site_url()); ?>" target="_blank">Buy Course</a>
+	</div>
+      </div>
     </div>
   </div>
 </body>
